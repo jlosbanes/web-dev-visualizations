@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Status = "planned" | "built" | "diagram";
 
 type Demo = {
@@ -13,31 +15,33 @@ type Demo = {
 const demos: Demo[] = [
   {
     id: "csr",
-    name: "CSR",
+    name: "Client-Side Rendering",
     tradeoff: "Client pays. Empty shell, JS does everything.",
     x: 85,
-    y: 12,
-    status: "planned",
+    y: 88,
+    status: "built",
+    href: "/csr",
   },
   {
     id: "streaming",
-    name: "Streaming SSR",
+    name: "Streaming Server-Side Rendering",
     tradeoff: "HTML chunks arrive as data resolves on the server.",
     x: 50,
-    y: 35,
+    y: 65,
     status: "planned",
   },
   {
     id: "ssr",
-    name: "SSR",
+    name: "Server-Side Rendering",
     tradeoff: "Fresh HTML per request, then full hydration.",
     x: 50,
-    y: 55,
-    status: "planned",
+    y: 50,
+    status: "built",
+    href: "/ssr",
   },
   {
     id: "rsc",
-    name: "RSC",
+    name: "React Server Components",
     tradeoff: "Server components ship ~0 JS to the client.",
     x: 20,
     y: 50,
@@ -45,18 +49,19 @@ const demos: Demo[] = [
   },
   {
     id: "isr",
-    name: "ISR",
-    tradeoff: "SSG with stale-while-revalidate at the edge.",
+    name: "Incremental Static Regeneration",
+    tradeoff:
+      "Static Site Generation with stale-while-revalidate at the edge.",
     x: 50,
-    y: 75,
+    y: 25,
     status: "diagram",
   },
   {
     id: "ssg",
-    name: "SSG",
+    name: "Static Site Generation",
     tradeoff: "Free at request time, stale until rebuild.",
     x: 50,
-    y: 90,
+    y: 10,
     status: "diagram",
   },
 ];
@@ -107,6 +112,7 @@ function StatusBadge({ status }: { status: Status }) {
 function Dot({ demo }: { demo: Demo }) {
   const filled = demo.status === "built";
   const dimmed = demo.status === "diagram";
+  const labelOnLeft = demo.x > 60;
 
   const dotCls = filled
     ? "bg-zinc-900 dark:bg-zinc-100"
@@ -118,26 +124,62 @@ function Dot({ demo }: { demo: Demo }) {
     ? "text-zinc-400 dark:text-zinc-600"
     : "text-zinc-900 dark:text-zinc-100";
 
-  return (
+  const style: React.CSSProperties = {
+    left: `${demo.x}%`,
+    top: `${demo.y}%`,
+    transform: labelOnLeft
+      ? "translateY(-50%) translateX(calc(-100% + 5px))"
+      : "translateY(-50%) translateX(-5px)",
+  };
+
+  const inner = (
     <div
-      className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center gap-2"
-      style={{ left: `${demo.x}%`, top: `${demo.y}%` }}
-      title={demo.tradeoff}
+      className={`flex items-center gap-2 ${labelOnLeft ? "flex-row-reverse" : ""}`}
     >
-      <span className={`block h-2.5 w-2.5 ${dotCls}`} />
-      <span className={`text-xs ${labelCls}`}>{demo.name}</span>
+      <span className={`block h-2.5 w-2.5 shrink-0 ${dotCls}`} />
+      <span className={`whitespace-nowrap text-xs ${labelCls}`}>
+        {demo.name}
+      </span>
+    </div>
+  );
+
+  if (demo.href) {
+    return (
+      <Link
+        href={demo.href}
+        className="absolute hover:underline"
+        style={style}
+        title={demo.tradeoff}
+      >
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="absolute" style={style} title={demo.tradeoff}>
+      {inner}
     </div>
   );
 }
 
 function DemoRow({ demo, idWidth }: { demo: Demo; idWidth: string }) {
+  const name = demo.href ? (
+    <Link
+      href={demo.href}
+      className={`${idWidth} shrink-0 text-zinc-900 hover:underline dark:text-zinc-100`}
+    >
+      {demo.name}
+    </Link>
+  ) : (
+    <span className={`${idWidth} shrink-0 text-zinc-900 dark:text-zinc-100`}>
+      {demo.name}
+    </span>
+  );
+
   return (
     <li className="flex items-baseline gap-4">
-      <span
-        className={`${idWidth} shrink-0 text-zinc-900 dark:text-zinc-100`}
-      >
-        {demo.name}
-      </span>
+      {name}
       <span className="flex-1 leading-relaxed text-zinc-600 dark:text-zinc-400">
         {demo.tradeoff}
       </span>
@@ -169,12 +211,12 @@ export default function Home() {
             THE SPECTRUM
           </h2>
 
-          <div className="relative h-[420px] border border-zinc-200 dark:border-zinc-800">
+          <div className="relative h-105 border border-zinc-200 dark:border-zinc-800">
             <span className="absolute left-3 top-2 text-[10px] tracking-widest text-zinc-500">
-              ↑ NO SERVER WORK
+              ↑ MORE SERVER WORK
             </span>
             <span className="absolute bottom-2 left-3 text-[10px] tracking-widest text-zinc-500">
-              ↓ BUILD-TIME WORK
+              ↓ LESS SERVER WORK
             </span>
             <span className="absolute right-3 top-2 text-[10px] tracking-widest text-zinc-500">
               ← LESS JS
@@ -194,10 +236,47 @@ export default function Home() {
           </div>
 
           <p className="text-xs leading-relaxed text-zinc-500">
-            X axis: how much JS the strategy ships to the client. Y axis: when
-            the HTML is generated — build time (bottom) through request time
-            (middle) to never on the server (top, CSR).
+            X axis: how much JS the strategy ships to the client. Y axis: how
+            much rendering the server does — none at the bottom (an empty
+            shell, all work on the client), request-time rendering in the
+            middle, fully built in advance at the top.
           </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-xs tracking-widest text-zinc-500">
+            HOW TO COMPARE
+          </h2>
+          <p className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
+            Click a <span className="text-zinc-900 dark:text-zinc-100">Built</span>{" "}
+            strategy below to open its demo. Each demo renders the same
+            100-row table; only the rendering path differs. A metrics overlay
+            in the bottom-right reports TTFB, FCP, LCP, CLS, INP, hydration
+            time, and the JS weight that route shipped.
+          </p>
+          <ul className="space-y-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Hard-refresh each demo.
+              </span>{" "}
+              Client-side navigation reuses the original navigation entry, so
+              hydration and load timings won&apos;t reset between routes.
+            </li>
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Disable cache in DevTools
+              </span>{" "}
+              and throttle network (e.g., Slow 4G) to make differences visible
+              on localhost.
+            </li>
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Production deltas are larger than dev.
+              </span>{" "}
+              Dev mode ships unminified JS with HMR overhead — JS weight will
+              be 5–10× a production build.
+            </li>
+          </ul>
         </section>
 
         <section className="space-y-3">
@@ -206,7 +285,7 @@ export default function Home() {
           </h2>
           <ul className="space-y-3 text-xs">
             {demos.map((d) => (
-              <DemoRow key={d.id} demo={d} idWidth="w-32" />
+              <DemoRow key={d.id} demo={d} idWidth="w-72" />
             ))}
           </ul>
         </section>

@@ -1,6 +1,6 @@
 # web-dev-visualizations
 
-Interactive visualizations of the modern web rendering spectrum — CSR, SSR, SSG, ISR, Streaming SSR, RSC — with live performance metrics.
+Interactive visualizations of the modern web rendering spectrum — Client-Side Rendering, Server-Side Rendering, Static Site Generation, Incremental Static Regeneration, Streaming Server-Side Rendering, React Server Components — with live performance metrics.
 
 > **Status:** Early development. Landing page and framing in place; no demos built yet.
 
@@ -16,14 +16,14 @@ It is a learning project. I'm working through SSR, RSC, streaming, and the Next.
 
 Rendering strategies, positioned on the spectrum by `(JS shipped to client, when HTML is generated)`:
 
-| Demo            | Tradeoff                                              | Status  |
-| --------------- | ----------------------------------------------------- | ------- |
-| CSR             | Client pays. Empty shell, JS does everything.         | Planned |
-| Streaming SSR   | HTML chunks arrive as data resolves on the server.    | Planned |
-| SSR             | Fresh HTML per request, then full hydration.          | Planned |
-| RSC             | Server components ship ~0 JS to the client.           | Planned |
-| ISR             | SSG with stale-while-revalidate at the edge.          | Diagram |
-| SSG             | Free at request time, stale until rebuild.            | Diagram |
+| Demo                              | Tradeoff                                                          | Status  |
+| --------------------------------- | ----------------------------------------------------------------- | ------- |
+| Client-Side Rendering             | Client pays. Empty shell, JS does everything.                     | Built   |
+| Streaming Server-Side Rendering   | HTML chunks arrive as data resolves on the server.                | Planned |
+| Server-Side Rendering             | Fresh HTML per request, then full hydration.                      | Built   |
+| React Server Components           | Server components ship ~0 JS to the client.                       | Planned |
+| Incremental Static Regeneration   | Static Site Generation with stale-while-revalidate at the edge.   | Diagram |
+| Static Site Generation            | Free at request time, stale until rebuild.                        | Diagram |
 
 Deep dives, cross-cutting demos:
 

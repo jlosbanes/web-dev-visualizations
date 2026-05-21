@@ -28,7 +28,8 @@ const demos: Demo[] = [
     tradeoff: "HTML chunks arrive as data resolves on the server.",
     x: 50,
     y: 65,
-    status: "planned",
+    status: "built",
+    href: "/streaming",
   },
   {
     id: "ssr",
@@ -45,7 +46,8 @@ const demos: Demo[] = [
     tradeoff: "Server components ship ~0 JS to the client.",
     x: 20,
     y: 50,
-    status: "planned",
+    status: "built",
+    href: "/rsc",
   },
   {
     id: "isr",
@@ -55,6 +57,7 @@ const demos: Demo[] = [
     x: 50,
     y: 25,
     status: "diagram",
+    href: "/isr",
   },
   {
     id: "ssg",
@@ -63,6 +66,7 @@ const demos: Demo[] = [
     x: 50,
     y: 10,
     status: "diagram",
+    href: "/ssg",
   },
 ];
 
@@ -71,10 +75,11 @@ const deepDives: Demo[] = [
     id: "hydration",
     name: "Hydration visualizer",
     tradeoff:
-      "The gap between 'rendered' and 'interactive', and how RSC closes it.",
+      "The gap between 'rendered' and 'interactive', and how React Server Components close it.",
     x: 0,
     y: 0,
-    status: "planned",
+    status: "built",
+    href: "/hydration",
   },
   {
     id: "cache",
@@ -83,7 +88,8 @@ const deepDives: Demo[] = [
       "Request memoization, data cache, full route cache, router cache — live hit/miss.",
     x: 0,
     y: 0,
-    status: "planned",
+    status: "built",
+    href: "/cache",
   },
   {
     id: "anti-patterns",
@@ -91,7 +97,8 @@ const deepDives: Demo[] = [
     tradeoff: "Bad pattern next to good pattern, measured deltas.",
     x: 0,
     y: 0,
-    status: "planned",
+    status: "built",
+    href: "/anti-patterns",
   },
 ];
 
@@ -248,11 +255,13 @@ export default function Home() {
             HOW TO COMPARE
           </h2>
           <p className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-            Click a <span className="text-zinc-900 dark:text-zinc-100">Built</span>{" "}
-            strategy below to open its demo. Each demo renders the same
-            100-row table; only the rendering path differs. A metrics overlay
-            in the bottom-right reports TTFB, FCP, LCP, CLS, INP, hydration
-            time, and the JS weight that route shipped.
+            Click a{" "}
+            <span className="text-zinc-900 dark:text-zinc-100">Built</span>{" "}
+            strategy below to open its demo. A metrics overlay in the
+            bottom-right reports TTFB, FCP, LCP, CLS, INP, hydration time,
+            and JS weight. Most rendering-strategy demos use a shared
+            100-row data table so their deltas are directly comparable; the
+            deep dives focus on cross-cutting concepts.
           </p>
           <ul className="space-y-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
             <li>
@@ -275,6 +284,52 @@ export default function Home() {
               </span>{" "}
               Dev mode ships unminified JS with HMR overhead — JS weight will
               be 5–10× a production build.
+            </li>
+          </ul>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-xs tracking-widest text-zinc-500">
+            DEMO-SPECIFIC CAVEATS
+          </h2>
+          <ul className="space-y-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Hydration visualizer.
+              </span>{" "}
+              The 2.5-second block is module-level code in a{" "}
+              <code>&apos;use client&apos;</code> file — it runs once when
+              the client bundle evaluates, before React hydrates. After
+              editing the file, hard-refresh to evaluate the module from
+              scratch.
+            </li>
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Cache tier visualizer.
+              </span>{" "}
+              Request Memoization is shown with a plain function (three
+              different values) to make the contrast obvious — swapping in{" "}
+              <code>fetch()</code> would dedupe to a single value. Full
+              Route Cache requires a production build (
+              <code>next build &amp;&amp; next start</code>); dev mode
+              regenerates every request.
+            </li>
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                Anti-pattern museum.
+              </span>{" "}
+              JS WEIGHT reflects both columns combined on the page. To
+              isolate the bad column&apos;s bundle cost, open DevTools →
+              Sources and find the <code>ClientAggregator</code> chunk.
+            </li>
+            <li>
+              <span className="text-zinc-900 dark:text-zinc-100">
+                React Server Components.
+              </span>{" "}
+              The JS WEIGHT delta vs. Server-Side Rendering is real but
+              modest — the filter input is the only client JS being
+              removed. The lesson is conceptual (this table&apos;s render
+              code never reaches the client), not a dramatic number.
             </li>
           </ul>
         </section>

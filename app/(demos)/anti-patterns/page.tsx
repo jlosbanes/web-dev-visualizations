@@ -84,7 +84,7 @@ export default function AntiPatternsPage() {
           need the raw data, only the result.
         </p>
         <p className="text-xs leading-relaxed text-zinc-500">
-          JS WEIGHT in the metrics overlay reflects the combined cost
+          JavaScript Weight in the metrics overlay reflects the combined cost
           of both columns on this page. To measure each in isolation,
           open DevTools → Sources and find the route&apos;s chunk for
           ClientAggregator.

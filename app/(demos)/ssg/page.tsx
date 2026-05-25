@@ -1,3 +1,5 @@
+import CodeBlock from "@/components/CodeBlock";
+
 export default function SSGPage() {
   return (
     <main className="space-y-6">
@@ -26,9 +28,8 @@ export default function SSGPage() {
 
       <section className="space-y-3">
         <h2 className="text-xs tracking-widest text-zinc-500">IN NEXT.JS</h2>
-        <pre className="overflow-x-auto border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-950">
-          {`// app/blog/[slug]/page.tsx
-export async function generateStaticParams() {
+        <CodeBlock filename="app/blog/[slug]/page.tsx">
+          {`export async function generateStaticParams() {
   const posts = await fetchAllPosts()
   return posts.map((post) => ({ slug: post.slug }))
 }
@@ -37,7 +38,7 @@ export default async function Post({ params }) {
   const post = await fetchPost(params.slug)
   return <Article post={post} />
 }`}
-        </pre>
+        </CodeBlock>
         <p className="text-xs leading-relaxed text-zinc-500">
           By default, App Router routes are statically generated at
           build time if they don&apos;t read dynamic data per request.

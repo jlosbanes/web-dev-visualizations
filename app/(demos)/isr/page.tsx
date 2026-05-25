@@ -1,3 +1,5 @@
+import CodeBlock from "@/components/CodeBlock";
+
 export default function ISRPage() {
   return (
     <main className="space-y-6">
@@ -29,10 +31,8 @@ export default function ISRPage() {
 
       <section className="space-y-3">
         <h2 className="text-xs tracking-widest text-zinc-500">IN NEXT.JS</h2>
-        <pre className="overflow-x-auto border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-800 dark:bg-zinc-950">
-          {`// app/article/[slug]/page.tsx
-
-// Revalidate every 60 seconds.
+        <CodeBlock filename="app/article/[slug]/page.tsx">
+          {`// Revalidate every 60 seconds.
 export const revalidate = 60
 
 export default async function Article({ params }) {
@@ -43,7 +43,7 @@ export default async function Article({ params }) {
 // Or on-demand, from a webhook:
 // import { revalidatePath } from 'next/cache'
 // revalidatePath('/article/' + slug)`}
-        </pre>
+        </CodeBlock>
       </section>
 
       <section className="space-y-3">

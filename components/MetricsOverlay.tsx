@@ -135,7 +135,7 @@ export default function MetricsOverlay() {
     v === undefined ? "—" : `${(v / 1024).toFixed(1)} kB`;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-64 border border-zinc-200 bg-white font-mono text-xs dark:border-zinc-800 dark:bg-black">
+    <div className="fixed bottom-4 right-4 z-50 w-80 border border-zinc-200 bg-white font-mono text-xs dark:border-zinc-800 dark:bg-black">
       <button
         onClick={() => setCollapsed((c) => !c)}
         className="flex w-full items-center justify-between border-b border-zinc-200 px-3 py-2 tracking-widest text-zinc-500 hover:text-zinc-900 dark:border-zinc-800 dark:hover:text-zinc-100"
@@ -145,13 +145,16 @@ export default function MetricsOverlay() {
       </button>
       {!collapsed && (
         <dl>
-          <Row label="TTFB" value={fmtMs(metrics.ttfb)} />
-          <Row label="FCP" value={fmtMs(metrics.fcp)} />
-          <Row label="LCP" value={fmtMs(metrics.lcp)} />
-          <Row label="CLS" value={fmtCls(metrics.cls)} />
-          <Row label="INP" value={fmtMs(metrics.inp)} />
-          <Row label="HYDRATION" value={fmtMs(metrics.hydration)} />
-          <Row label="JS WEIGHT" value={fmtKb(metrics.jsWeight)} />
+          <Row label="Time to First Byte" value={fmtMs(metrics.ttfb)} />
+          <Row label="First Contentful Paint" value={fmtMs(metrics.fcp)} />
+          <Row label="Largest Contentful Paint" value={fmtMs(metrics.lcp)} />
+          <Row label="Cumulative Layout Shift" value={fmtCls(metrics.cls)} />
+          <Row
+            label="Interaction to Next Paint"
+            value={fmtMs(metrics.inp)}
+          />
+          <Row label="Hydration" value={fmtMs(metrics.hydration)} />
+          <Row label="JavaScript Weight" value={fmtKb(metrics.jsWeight)} />
         </dl>
       )}
     </div>

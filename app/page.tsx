@@ -258,10 +258,12 @@ export default function Home() {
             Click a{" "}
             <span className="text-zinc-900 dark:text-zinc-100">Built</span>{" "}
             strategy below to open its demo. A metrics overlay in the
-            bottom-right reports TTFB, FCP, LCP, CLS, INP, hydration time,
-            and JS weight. Most rendering-strategy demos use a shared
-            100-row data table so their deltas are directly comparable; the
-            deep dives focus on cross-cutting concepts.
+            bottom-right reports Time to First Byte, First Contentful
+            Paint, Largest Contentful Paint, Cumulative Layout Shift,
+            Interaction to Next Paint, hydration time, and JavaScript
+            weight. Most rendering-strategy demos use a shared 100-row
+            data table so their deltas are directly comparable; the deep
+            dives focus on cross-cutting concepts.
           </p>
           <ul className="space-y-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
             <li>
@@ -282,8 +284,9 @@ export default function Home() {
               <span className="text-zinc-900 dark:text-zinc-100">
                 Production deltas are larger than dev.
               </span>{" "}
-              Dev mode ships unminified JS with HMR overhead — JS weight will
-              be 5–10× a production build.
+              Dev mode ships unminified JavaScript with hot-reload
+              overhead — JavaScript weight will be 5–10× a production
+              build.
             </li>
           </ul>
         </section>
@@ -318,18 +321,20 @@ export default function Home() {
               <span className="text-zinc-900 dark:text-zinc-100">
                 Anti-pattern museum.
               </span>{" "}
-              JS WEIGHT reflects both columns combined on the page. To
-              isolate the bad column&apos;s bundle cost, open DevTools →
-              Sources and find the <code>ClientAggregator</code> chunk.
+              JavaScript Weight reflects both columns combined on the
+              page. To isolate the bad column&apos;s bundle cost, open
+              DevTools → Sources and find the{" "}
+              <code>ClientAggregator</code> chunk.
             </li>
             <li>
               <span className="text-zinc-900 dark:text-zinc-100">
                 React Server Components.
               </span>{" "}
-              The JS WEIGHT delta vs. Server-Side Rendering is real but
-              modest — the filter input is the only client JS being
-              removed. The lesson is conceptual (this table&apos;s render
-              code never reaches the client), not a dramatic number.
+              The JavaScript Weight delta vs. Server-Side Rendering is
+              real but modest — the filter input is the only client
+              JavaScript being removed. The lesson is conceptual (this
+              table&apos;s render code never reaches the client), not a
+              dramatic number.
             </li>
           </ul>
         </section>

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "web-dev-visualizations",
   description:
-    "Interactive visualizations of modern web rendering strategies — CSR, SSR, streaming, RSC — with live performance metrics.",
+    "Interactive visualizations of the modern web rendering spectrum with live performance metrics.",
 };
 
 export default function RootLayout({
